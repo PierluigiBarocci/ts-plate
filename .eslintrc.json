@@ -18,9 +18,48 @@
   },
   "rules": {
     "prefer-const": "error",
+    "sort-imports": [
+      "error",
+      { "ignoreCase": true, "ignoreDeclarationSort": true }
+    ],
     "unused-imports/no-unused-imports-ts": 2,
     "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "react/react-in-jsx-scope": 0,
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "import/extensions": [
+      "error",
+      "always",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "alphabetize": {
+          "order": "asc"
+        }
+      }
+    ]
   },
-  "plugins": ["@typescript-eslint", "unused-imports"]
+  "plugins": ["@typescript-eslint", "unused-imports", "import"],
+  "settings": {
+    "react": {
+      "version": "latest"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "moduleDirectory": ["node_modules", "./"]
+      }
+    }
+  }
 }

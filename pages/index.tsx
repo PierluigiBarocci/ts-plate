@@ -1,7 +1,7 @@
-import { translation } from '@utils/translation';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useIntl } from 'react-intl';
+import { translation } from '@utils/translation';
 
 const Home: NextPage = () => {
   const intl = useIntl();

@@ -1,7 +1,7 @@
 import '../styles/globals.css';
 import { AppProps } from 'next/app';
-import { useMemo } from 'react';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 import { IntlProvider } from 'react-intl';
 import en from '@lang/en.json';
 import it from '@lang/it.json';
