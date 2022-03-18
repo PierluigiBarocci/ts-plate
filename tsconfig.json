@@ -23,7 +23,7 @@
     "strictNullChecks": true,
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["components/*"],
+      "@components": ["components/index.ts"],
       "@utils/*": ["utils/*"],
       "@lib/*": ["lib/*"],
       "@nodes/*": ["components/nodes/*"],

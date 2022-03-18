@@ -1,11 +1,13 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useIntl } from 'react-intl';
+import { Footer, Header } from '@components';
 import { translation } from '@utils/translation';
 
 const Home: NextPage = () => {
   const intl = useIntl();
   const i18n = translation.home(intl);
+
   return (
     <div>
       <Head>
@@ -14,6 +16,8 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>{i18n.title}</h1>
+      <Header />
+      <Footer />
     </div>
   );
 };
