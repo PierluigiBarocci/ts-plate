@@ -3,6 +3,8 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -10,16 +12,19 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "pretty": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "sourceMap": true,
     "baseUrl": "./",
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@lib/*": ["lib/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@nodes/*": ["components/nodes/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
