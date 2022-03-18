@@ -18,13 +18,16 @@
     "jsx": "preserve",
     "incremental": true,
     "sourceMap": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
     "baseUrl": "./",
     "paths": {
       "@components/*": ["components/*"],
       "@utils/*": ["utils/*"],
       "@lib/*": ["lib/*"],
-      "@services/*": ["services/*"],
-      "@nodes/*": ["components/nodes/*"]
+      "@nodes/*": ["components/nodes/*"],
+      "@lang/*": ["lang/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
