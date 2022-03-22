@@ -53,7 +53,7 @@
   "plugins": ["@typescript-eslint", "unused-imports", "import"],
   "settings": {
     "react": {
-      "version": "latest"
+      "version": "detect"
     },
     "import/resolver": {
       "node": {
