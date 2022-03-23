@@ -27,6 +27,9 @@ module.exports = {
       },
     ];
   },
+  images: {
+    domains: [process.env.NEXT_IMAGE_DOMAIN],
+  },
   reactStrictMode: true,
   i18n: {
     locales: ['en', 'it'],
