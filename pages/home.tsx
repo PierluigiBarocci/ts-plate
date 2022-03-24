@@ -43,7 +43,7 @@ export default function HomePage({ user }: IndexPageProps) {
             logged in 🎉
           </Typography>
         ) : (
-          <Link href="/api/auth/login" passHref>
+          <Link href="/api/auth/login" locale="en" passHref>
             <Button variant="contained" color="secondary">
               Login with Drupal
             </Button>
