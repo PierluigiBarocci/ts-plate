@@ -54,6 +54,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
       props: {
         user: session.user,
+        session: session,
       },
     };
   } catch {
@@ -63,7 +64,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 };
 
-export default function IndexPage(props: { user: User | undefined }) {
-  const { user } = props;
-  return <HomePage user={user} />;
+export default function IndexPage(props: {
+  user: User | undefined;
+  session: UserSession;
+}) {
+  const { user, session } = props;
+  return <HomePage user={user} session={session} />;
 }
