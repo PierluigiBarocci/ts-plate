@@ -19,7 +19,9 @@
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-intl": "5.24.6"
+    "react-intl": "5.24.6",
+    "cookie": "^0.4.2",
+    "iron": "^5.0.6"
   },
   "devDependencies": {
     "@formatjs/cli": "4.8.2",
@@ -29,6 +31,8 @@
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/eslint-plugin-tslint": "^4.5.0",
     "@typescript-eslint/parser": "^5.15.0",
+    "@types/cookie": "^0.4.1",
+    "@types/iron": "^5.0.2",
     "babel-plugin-formatjs": "10.3.18",
     "eslint": "^8.11.0",
     "eslint-config-next": "12.1.0",

@@ -36,4 +36,5 @@ module.exports = {
     defaultLocale: 'en',
     localeDetection: false,
   },
+  trailingSlash: true,
 };
