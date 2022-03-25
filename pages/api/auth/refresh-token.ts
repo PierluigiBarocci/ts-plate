@@ -1,8 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { TokenData } from '@utils/types';
 
 type Data = {
-  name: string;
+  token: TokenData;
 };
 
 export default async function handler(
@@ -31,7 +32,7 @@ export default async function handler(
     method: 'POST',
   });
 
-  const refreshedTokens = await response.json();
+  const refreshedTokens: TokenData = await response.json();
   console.log('LOG::  ~ refreshedTokens', refreshedTokens);
-  res.status(200).json({ name: 'John Doe' });
+  res.status(200).json({ token: refreshedTokens });
 }

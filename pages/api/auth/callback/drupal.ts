@@ -70,7 +70,7 @@ export default async (req: ModifiedNextApiReq, res: NextApiResponse) => {
     // You might want to log the error here
     res.status(500).json({
       statusCode: 500,
-      message: 'Something went wrong' + error,
+      message: 'Something went wrong',
     });
   }
 };

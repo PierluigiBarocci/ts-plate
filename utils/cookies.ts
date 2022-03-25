@@ -37,13 +37,69 @@ export const setAuthCookie = async (
       opts.maxAge /= 1000;
     }
 
+    // const refreshOpts = { ...opts };
+    // delete refreshOpts.expires;
+    // delete refreshOpts.maxAge;
+
     // Set the cookie in the header of the response
     res.setHeader(
       'Set-Cookie',
       cookie.serialize('auth.session', stringValue, opts)
     );
+    // res.setHeader('Set-Cookie', [
+    //   cookie.serialize('auth.session', stringValue, opts),
+    //   cookie.serialize('auth.refresh', stringValue, refreshOpts),
+    // ]);
   } catch (error) {
     console.error('Failed to seal session object', error);
     return;
   }
 };
+
+export const getSessionCookie = async (
+  cookies: Record<string, string>
+): Promise<UserSession> => {
+  const fetchedCookies = cookies['auth.session'];
+
+  if (!fetchedCookies) {
+    throw new Error('Auth session not found');
+  }
+
+  // Decrypt the auth cookie
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const decoded: any =
+    process.env.NEXTAUTH_SECRET &&
+    (await Iron.unseal(
+      fetchedCookies,
+      process.env.NEXTAUTH_SECRET,
+      Iron.defaults
+    ));
+
+  return decoded;
+};
+
+// const refreshToken = async ({ token }: { token: TokenData }) => {
+//   const { NEXT_PUBLIC_DRUPAL_BASE_URL, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } =
+//     process.env;
+//   const url = `${NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
+//   const formData = new URLSearchParams();
+//   if (OAUTH_CLIENT_ID && OAUTH_CLIENT_SECRET && token.refresh_token) {
+//     formData.append('grant_type', 'refresh_token');
+//     formData.append('client_id', OAUTH_CLIENT_ID);
+//     formData.append('client_secret', OAUTH_CLIENT_SECRET);
+//     formData.append('refresh_token', token.refresh_token);
+//   }
+//   console.log('LOG::  ~ formData', formData);
+//   const response = await fetch(url, {
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       Authorization: token.token_type + ' ' + token.access_token,
+//     },
+//     body: formData,
+//     method: 'POST',
+//   });
+
+//   const refreshedTokens: TokenData = await response.json();
+//   console.log('LOG::  ~ refreshedTokens', refreshedTokens);
+//   return refreshedTokens;
+// };

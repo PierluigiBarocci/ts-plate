@@ -1,10 +1,12 @@
 import '../styles/globals.css';
+import { ThemeProvider } from '@mui/material';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { IntlProvider } from 'react-intl';
 import en from '@lang/en.json';
 import it from '@lang/it.json';
+import theme from 'theme';
 const Langs = { en, it };
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -36,7 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
       messages={messages}
       onError={handleIntlError}
     >
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </IntlProvider>
   );
 }
