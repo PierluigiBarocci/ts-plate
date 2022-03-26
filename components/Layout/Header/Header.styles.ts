@@ -44,6 +44,7 @@ export const LinkWrapper = styled('div')({
 export const LogoImg = styled('img')(({ theme }) => ({
   width: 168,
   height: 30.5,
+  cursor: 'pointer',
   // backgroundColor: "red",
   marginRight: '40%',
   [theme.breakpoints.up('md')]: {
@@ -78,10 +79,13 @@ export const UserOptions = styled('div')({
 export const IconUser = styled('img')(() => ({
   width: 21,
   height: 21,
+  borderRadius: 50,
+  cursor: 'pointer',
 }));
 
 export const IconLikeShop = styled('img')(({ theme }) => ({
   display: 'none',
+  cursor: 'pointer',
   [theme.breakpoints.up('md')]: {
     display: 'block',
   },

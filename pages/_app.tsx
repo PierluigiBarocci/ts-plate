@@ -4,8 +4,11 @@ import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { IntlProvider } from 'react-intl';
+import { Layout } from '@components';
 import en from '@lang/en.json';
 import it from '@lang/it.json';
+
+import { AuthProvider } from 'context/AuthContext';
 import theme from 'theme';
 const Langs = { en, it };
 
@@ -39,7 +42,11 @@ export default function App({ Component, pageProps }: AppProps) {
       onError={handleIntlError}
     >
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </AuthProvider>
       </ThemeProvider>
     </IntlProvider>
   );

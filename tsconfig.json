@@ -26,6 +26,7 @@
       "@components": ["components/index.ts"],
       "@utils/*": ["utils/*"],
       "@lib/*": ["lib/*"],
+      "@config/*": ["config/index.ts"],
       "@nodes/*": ["components/nodes/*"],
       "@lang/*": ["lang/*"]
     }

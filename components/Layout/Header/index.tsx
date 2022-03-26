@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import Link from 'next/link';
+import { useContext } from 'react';
 import {
   DropdownLang,
   HeaderStyle,
@@ -16,8 +17,10 @@ import {
 } from './Header.styles';
 import { MenuItemsObject } from './Header.types';
 import { FlexContainer } from 'components/Layout/Layout.styles';
+import AuthContext from 'context/AuthContext';
 
 const Header = () => {
+  const { user } = useContext(AuthContext);
   const menuItemsLeft: MenuItemsObject[] = [
     {
       href: '#artwork',
@@ -41,7 +44,9 @@ const Header = () => {
   return (
     <HeaderStyle>
       <FlexContainer>
-        <LogoImg src="/images/logos/logo.svg" />
+        <Link href="/" passHref>
+          <LogoImg src="/images/logos/logo.svg" />
+        </Link>
         <LinkContainer>
           <LinkWrapper>
             {menuItemsLeft.map((item, index) => (
@@ -69,9 +74,17 @@ const Header = () => {
         </LinkContainer>
         <IconsContainer>
           <UserOptions>
-            <IconUser src="/images/icons/user.svg" />
+            {user.name ? (
+              <IconUser src="/images/girl.jpg" />
+            ) : (
+              <Link href="/api/auth/login" locale="en" passHref>
+                <IconUser src="/images/icons/user.svg" />
+              </Link>
+            )}
             <IconLikeShop src="/images/icons/like.svg" />
-            <IconLikeShop src="/images/icons/shop.svg" />
+            <Link href="/cart" passHref>
+              <IconLikeShop src="/images/icons/shop.svg" />
+            </Link>
           </UserOptions>
           <LanguageSelector>
             <Typography variant="px14Light" color={'primary.dark'}>

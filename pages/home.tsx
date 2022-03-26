@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useIntl } from 'react-intl';
 
-import { Layout } from '@components';
 import { translation } from '@utils/translation';
 import { User, UserSession } from 'utils/types';
 
@@ -47,22 +46,23 @@ export default function HomePage({ user, session }: IndexPageProps) {
           content="A Next.js site powered by a Drupal backend."
         />
       </Head>
-      <Layout>
-        <div
-          style={{
-            width: '80%',
-            margin: '0 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 30,
-          }}
-        >
-          <Typography variant="h1" style={{ fontSize: 40, marginBottom: 30 }}>
-            {i18n.title}
-          </Typography>
-          {user && session ? (
+
+      <div
+        style={{
+          width: '80%',
+          margin: '0 auto',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 30,
+        }}
+      >
+        <Typography variant="h1" style={{ fontSize: 40, marginBottom: 30 }}>
+          {i18n.title}
+        </Typography>
+        {
+          user && session && (
             <>
               <Typography variant="h1" style={{ fontSize: 40 }}>
                 <span style={{ color: 'purple' }}> {user.email}</span> is
@@ -94,36 +94,37 @@ export default function HomePage({ user, session }: IndexPageProps) {
                 </Button>
               </div>
             </>
-          ) : (
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '100%',
-              }}
-            >
-              <Link href="/api/auth/login" locale="en" passHref>
-                <Button variant="contained" color="success">
-                  Login
-                </Button>
-              </Link>
-              <Typography
-                variant="h1"
-                style={{ fontSize: 28, margin: '0 30px' }}
-              >
-                or
-              </Typography>
-              <Link href="/api/auth/register" locale="en" passHref>
-                <Button variant="contained" color="info">
-                  Register
-                </Button>
-              </Link>
-            </div>
-          )}
-        </div>
-      </Layout>
+          )
+          // : (
+          //   <div
+          //     style={{
+          //       display: 'flex',
+          //       flexDirection: 'row',
+          //       justifyContent: 'center',
+          //       alignItems: 'center',
+          //       width: '100%',
+          //     }}
+          //   >
+          //     <Link href="/api/auth/login" locale="en" passHref>
+          //       <Button variant="contained" color="success">
+          //         Login
+          //       </Button>
+          //     </Link>
+          //     <Typography
+          //       variant="h1"
+          //       style={{ fontSize: 28, margin: '0 30px' }}
+          //     >
+          //       or
+          //     </Typography>
+          //     <Link href="/api/auth/register" locale="en" passHref>
+          //       <Button variant="contained" color="info">
+          //         Register
+          //       </Button>
+          //     </Link>
+          //   </div>
+          // )}
+        }
+      </div>
     </>
   );
 }
