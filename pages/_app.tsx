@@ -8,7 +8,7 @@ import { Layout } from '@components';
 import en from '@lang/en.json';
 import it from '@lang/it.json';
 
-import { AuthProvider } from 'context/AuthContext';
+import { UserProvider } from '@store';
 import theme from 'theme';
 const Langs = { en, it };
 
@@ -36,18 +36,18 @@ export default function App({ Component, pageProps }: AppProps) {
   };
 
   return (
-    <IntlProvider
-      locale={shortLocale}
-      messages={messages}
-      onError={handleIntlError}
-    >
-      <ThemeProvider theme={theme}>
-        <AuthProvider>
+    <ThemeProvider theme={theme}>
+      <IntlProvider
+        locale={shortLocale}
+        messages={messages}
+        onError={handleIntlError}
+      >
+        <UserProvider>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </AuthProvider>
-      </ThemeProvider>
-    </IntlProvider>
+        </UserProvider>
+      </IntlProvider>
+    </ThemeProvider>
   );
 }

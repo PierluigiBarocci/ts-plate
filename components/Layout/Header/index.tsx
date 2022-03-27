@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import Link from 'next/link';
-import { useContext } from 'react';
+
 import {
   DropdownLang,
   HeaderStyle,
@@ -16,11 +16,11 @@ import {
   UserOptions,
 } from './Header.styles';
 import { MenuItemsObject } from './Header.types';
+import { useUser } from '@store';
 import { FlexContainer } from 'components/Layout/Layout.styles';
-import AuthContext from 'context/AuthContext';
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
+  const user = useUser();
   const menuItemsLeft: MenuItemsObject[] = [
     {
       href: '#artwork',
@@ -74,7 +74,7 @@ const Header = () => {
         </LinkContainer>
         <IconsContainer>
           <UserOptions>
-            {user.name ? (
+            {user ? (
               <IconUser src="/images/girl.jpg" />
             ) : (
               <Link href="/api/auth/login" locale="en" passHref>

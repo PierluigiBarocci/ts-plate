@@ -28,7 +28,8 @@
       "@lib/*": ["lib/*"],
       "@config/*": ["config/index.ts"],
       "@nodes/*": ["components/nodes/*"],
-      "@lang/*": ["lang/*"]
+      "@lang/*": ["lang/*"],
+      "@store": ["store/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

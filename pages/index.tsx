@@ -40,11 +40,11 @@ import Button from '@mui/material/Button';
 
 import Head from 'next/head';
 import Link from 'next/link';
-import { useContext } from 'react';
+
 import { useIntl } from 'react-intl';
 
+import { useUser } from '@store';
 import { translation } from '@utils/translation';
-import AuthContext from 'context/AuthContext';
 
 // interface IndexPageProps {
 //   user?: User;
@@ -54,7 +54,7 @@ import AuthContext from 'context/AuthContext';
 export default function HomePage() {
   const intl = useIntl();
   const i18n = translation.home(intl);
-  const { user } = useContext(AuthContext);
+  const user = useUser();
 
   // const refreshToken = async () => {
   //   if (session && session.token) {
@@ -100,7 +100,7 @@ export default function HomePage() {
         <Typography variant="h1" style={{ fontSize: 40, marginBottom: 30 }}>
           {i18n.title}
         </Typography>
-        {user.name ? (
+        {user ? (
           <>
             <Typography variant="h1" style={{ fontSize: 40 }}>
               <span style={{ color: 'purple' }}> {user.email}</span> is
