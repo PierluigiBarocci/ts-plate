@@ -1,12 +1,17 @@
+import { ParsedUrlQuery } from 'querystring';
+
+import { GetStaticPropsContext, PreviewData } from 'next';
+
 import Head from 'next/head';
 
 import { useIntl } from 'react-intl';
-
+import { useToken } from '@store';
 import { translation } from '@utils/translation';
 
 const Cart = () => {
   const intl = useIntl();
   const i18n = translation.home(intl);
+  const token = useToken();
 
   return (
     <div>
@@ -16,6 +21,7 @@ const Cart = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>{i18n.title}</h1>
+      {token && <p>{token.access_token}</p>}
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores,
         officia eligendi perspiciatis corporis minus debitis eius doloribus
@@ -72,90 +78,126 @@ const Cart = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-//   try {
-//     const cookies = cookie.parse(req.headers.cookie || '');
-//     const session: UserSession = await getSessionCookie(cookies);
-//     console.log('LOG::  ~ session', session);
+export async function getStaticProps(
+  context: GetStaticPropsContext<ParsedUrlQuery, PreviewData>
+) {
+  try {
+    const fetchedToken =
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRhOTQ4NTU1OTA3NThlNTY4ZjEwNjVjYmZkYzc0MDUzMmE1ZGMyMmFhNzc0YjA3NGI4ZWI0N2Q4MWE5YTgzMWMwZGJkM2VhY2ZiMmEzNjg4In0.eyJhdWQiOiI5NzA2OWE0Yi04MDU1LTQwNTItOGNkMC1iOTliYjU4ODRiN2UiLCJqdGkiOiI0YTk0ODU1NTkwNzU4ZTU2OGYxMDY1Y2JmZGM3NDA1MzJhNWRjMjJhYTc3NGIwNzRiOGViNDdkODFhOWE4MzFjMGRiZDNlYWNmYjJhMzY4OCIsImlhdCI6MTY0ODQ2NDQ3OSwibmJmIjoxNjQ4NDY0NDc5LCJleHAiOjE2NDg0NjQ3NzkuNzY2NzEyOSwic3ViIjoiNCIsInNjb3BlIjpbImF1dGhlbnRpY2F0ZWQiLCJlbWFpbCJdfQ.MOnJAXmoMYzXdyy21ohbNcxW2dpi4vjk-uuVf60QWy0UNkXtwY5xC0DExe8p0ZgOPzgFQFOKagfGZC5sFMdoIjFECTtb9GOaEqHN3OWBZkgmw8ewHBb4VAK1umKrv62LDvimgvOyZTcfzhEHRdW-P4iz3WGHakmVqWggHK4vSJrmiyvXFLaCkFKaz4JJSBbb_964p5AvUJrYSIlhkHqrMkAMfcDM02FR7jQeoEMVgq4zVXFGoIJpjTHIcREO7KLbGosFDbACeZaHWlTb29TCauxIHKtc1JMTBdwHPKqctjOujs9pkX0ZVjTRZrsVBfCN81Ilu1f8UM88GA_WsGff7OBTpcEhLU751DGxs8Z_fRy8qx_vHFxThrGRgTyCPBokm71ta3Wh_MoX5b4tg_Oi1T5Swc7-EvUlFbFLiSUKdHsli4LDbzs6KIV9egqV_GnjaOSrnMa8O1rAq_p_yntiLdUvH-_h98SOi6_VBxZuMu9fZvZP3EDAQaseiBN0T8zAw23ct-WEnIT3rrYwULhlJ7riqaiXvKZZyw5iJHuk7-sToj6pv6OhanymJ7z8eg8bEPcWIf-nAyiLJ_NNg_Bsn-zNG_CNT8JOr2LzOxl9pqczFridC6QmI-ZJB8VZcoC0onFVJS_-fNG2ltNg4D6r7vHzIjozpJLLVJgFwfMMAsg';
+    // const cookies = cookie.parse(req.headers.cookie || '');
+    // const session: UserSession = await getSessionCookie(cookies);
 
-//     /**
-//      * Fetch Items from cart
-//      */
-//     const resCart = await fetch(
-//       `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/carts`,
-//       {
-//         headers: {
-//           'Content-Type': 'application/x-www-form-urlencoded',
-//           Authorization:
-//             session.token.token_type + ' ' + session.token.access_token,
-//         },
-//       }
-//     );
-//     const data = await resCart.json();
-//     console.log('LOG::  ~ data', data);
-/**
- * Search for all
- */
+    /**
+     * Fetch Items from cart
+     */
+    const resCart = await fetch(
+      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/cart?_format=json`,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${fetchedToken}`,
+        },
+      }
+    );
+    console.log('LOG::  ~ resCart', resCart);
+    const data = await resCart.json();
+    console.log('LOG::  ~ data', data[0].order_items);
+    /**
+     * Search for all
+     */
 
-// const products = await getResourceCollectionFromContext(
-//   "product--video",
-//   context,
-//   {
-//     params: {
-//       sort: "-created",
-//       include: 'variations,stores',
-//     },
-//   }
-// )
-// console.log('LOG::  ~ products', products[0])
+    // const products = await getResourceCollectionFromContext(
+    //   'product--artwork',
+    //   context,
+    //   {
+    //     params: {
+    //       sort: '-created',
+    //       include: 'variations,stores',
+    //     },
+    //   }
+    // );
+    // console.log('LOG::  ~ products', products[0]);
 
-// const res = await fetch(`${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/products/video`)
-// const data = await res.json()
-// console.log('LOG::  ~ data', data)
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/products/video`
+    // );
+    // const data = await res.json();
+    // console.log('LOG::  ~ data', data);
 
-/**
- * Add items to cart
- */
-// const cartToken = window.localStorage.getItem('cartToken') || Math.random().toString(36).substring(2)
-// const res = await fetch(
-//   `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/cart/add?include=order_id,order_id.order_items`,
-//   {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/vnd.api+json',
-//       'Commerce-Cart-Token': `ABC-123`,
-//       'Commerce-Current-Store': `98106e1f-ca58-42b1-a25f-8ac20c13847a`,
-//     },
-//     body: JSON.stringify({
-//       data: [
-//         {
-//           type: 'product-variation--video',
-//           id: '57af6be9-14a5-4267-858d-a86b7dc2cb58',
-//           meta: {
-//             quantity: 1,
-//             combine: true,
-//           },
-//         },
-//       ],
-//     }),
-//   }
-// );
-// const data = await res.json();
-// console.log('LOG::  ~ data', data);
+    /**
+     * Add items to cart REMEMBER ACCES TOKEN!!!
+     */
+    // const res = await fetch(
+    //   `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/cart/add?include=order_id,order_id.order_items`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/vnd.api+json',
+    //       'Commerce-Cart-Token': `ABC-123`,
+    //       'Commerce-Current-Store': `46fa1f24-9610-4735-84fe-4f9492907417`,
+    //       Authorization:
+    //         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjdiZmZiZDFiZDZiNGY2MGUxNWU3OWViODUyNmQzZjZhMzM3ODU4NDU3MzAxOTc5MWJkZTljM2M1NjUxY2Q1YjViMDVlYzUyMzQ1Y2QwNzBjIn0.eyJhdWQiOiI5NzA2OWE0Yi04MDU1LTQwNTItOGNkMC1iOTliYjU4ODRiN2UiLCJqdGkiOiI3YmZmYmQxYmQ2YjRmNjBlMTVlNzllYjg1MjZkM2Y2YTMzNzg1ODQ1NzMwMTk3OTFiZGU5YzNjNTY1MWNkNWI1YjA1ZWM1MjM0NWNkMDcwYyIsImlhdCI6MTY0ODQ2MjI1MywibmJmIjoxNjQ4NDYyMjUzLCJleHAiOjE2NDg0NjI1NTMuMjIyNTcwOSwic3ViIjoiNCIsInNjb3BlIjpbImF1dGhlbnRpY2F0ZWQiLCJlbWFpbCJdfQ.RxejCIT6R8TayebsUDeQSmhaAK8qaFSnPNuyTSYK7r8D1-Ygkq7k6DxyictOA4F4zfdBTevo7YUL-8vmoC8lRt3nKRnSqbE9p-EFDfXsBMEQDYJ88H2KgspJqyH7EosSNXdp8rCzti1waYeeuL40XG1OS9YEdX0CW_iwSe51HPSqNS4wDLUCz6lRcoZik25TxbeiPc3JnopWyfsMrd8yjNctJLtMQ4ZflKhJXFJNU8_S6gfMCKeKF2PxbdoTgQdIRcJDMQV0YfhY1ZXykiTQEgN77xFUggeiA1uHp1E_PDo69C0wYF9yCQ2fVNAgEObWdBmLOjmroy0eGNlpuM2URsQyUJnFMWXI82eQR-3phrcixcjTSPx7_5PNmdND27kRm1NVRDelG8rqMPrBkagUkH1E-1Msh0z3I8gl3J4Qu1D5bI-WHBbRE2O4DajwgrvAd0423Lp6k-oGY_Qw85yuQgwfLgkamKT3iSlgFHtEMgPZF_fxfp85c2yZ3RsLyJ7xlGAOnIyp7GONLrkVkzAm6znMLdnX_l-eEY7fa2YAbltPuB5jexu13LmUSlPyUQWgV9bdo-tnfA0XqPVnXhNfjIeFQnO-dhZViHWqffn-O9s3Qd0yYPu9ha44yLt_i2eDdBH1uMytreVNAloxozoD4p4oNwaMYp-vvSr0RsEPSS8',
+    //     },
+    //     body: JSON.stringify({
+    //       data: [
+    //         {
+    //           type: 'product-variation--artwork',
+    //           id: '4183fe9b-7e43-4db4-bac9-3efcdad81385',
+    //           meta: {
+    //             quantity: 1,
+    //             combine: true,
+    //           },
+    //         },
+    //       ],
+    //     }),
+    //   }
+    // );
+    // console.log('LOG::  ~ res', res);
+    // const data = await res.json();
+    // console.log('LOG::  ~ data', data);
 
-// const node = await getResource<DrupalNode>(
-//   'node--article',
-//   '5d5da489-ffb5-49c7-88b6-f147664bca4a'
-// );
+    /**Modify cart Item */
+    const resMo = await fetch(
+      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/carts/daeb47f1-45a9-4566-8747-053e59f31eb5/items/1`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/vnd.api+json',
+          'Commerce-Cart-Token': `ABC-123`,
+          'Commerce-Current-Store': `46fa1f24-9610-4735-84fe-4f9492907417`,
+          Authorization: `Bearer ${fetchedToken}`,
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              type: 'order-items--default',
+              id: '8b588ad2-d4a9-46c3-87e7-2c65ecf33404',
+              meta: {
+                quantity: 4,
+                combine: true,
+              },
+            },
+          ],
+        }),
+      }
+    );
+    console.log('LOG::  ~ res', resMo);
+    const dataMo = await resMo.json();
+    console.log('LOG::  ~ data', dataMo);
 
-//     return {
-//       props: { session },
-//     };
-//   } catch {
-//     return {
-//       props: {},
-//     };
-//   }
-// };
+    // const node = await getResource<DrupalNode>(
+    //   'node--article',
+    //   '5d5da489-ffb5-49c7-88b6-f147664bca4a'
+    // );
+
+    return {
+      props: {},
+    };
+  } catch {
+    return {
+      props: {},
+    };
+  }
+}
 
 export default Cart;

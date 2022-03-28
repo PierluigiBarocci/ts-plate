@@ -25,7 +25,7 @@
     "paths": {
       "@components": ["components/index.ts"],
       "@utils/*": ["utils/*"],
-      "@lib/*": ["lib/*"],
+      "@lib": ["lib/index.ts"],
       "@config/*": ["config/index.ts"],
       "@nodes/*": ["components/nodes/*"],
       "@lang/*": ["lang/*"],

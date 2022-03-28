@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import cookie from 'cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getSessionCookie } from '@utils/cookies';
+import { getSessionCookie } from '@lib';
 import { UserSession } from '@utils/types';
 
 type Data = {

@@ -1,23 +1,17 @@
 import { useEffect } from 'react';
 import { useLogin, useLogout } from './store';
-import { UserSession } from '@utils/types';
+import { checkValidSession } from '@lib';
 
 const SessionProvider = ({ children }: { children: React.ReactNode }) => {
   const login = useLogin();
-  const logut = useLogout();
+  const logout = useLogout();
   useEffect(() => {
-    const checkValidSession = async () => {
-      const res = await fetch(`/api/auth/check-session`);
-      const session: UserSession = await res.json();
-      if (res.ok) {
-        login(session);
-      } else {
-        logut();
-      }
+    const checkSession = async () => {
+      const session = await checkValidSession();
+      session ? login(session) : logout();
     };
-
     // Check if session is valid
-    checkValidSession();
+    checkSession();
   }, []);
   return <div>{children}</div>;
 };

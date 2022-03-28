@@ -2,11 +2,11 @@ import cookie from 'cookie';
 import Iron from 'iron';
 import { NextApiResponse } from 'next';
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
-import { UserSession } from './types';
+import { UserSession } from '../utils/types';
 
 const { NEXTAUTH_SECRET } = process.env;
 
-export const setAuthCookie = async (
+const setAuthCookie = async (
   res: NextApiResponse,
   session: UserSession,
   options: CookieSerializeOptions = {}
@@ -56,7 +56,7 @@ export const setAuthCookie = async (
   }
 };
 
-export const getSessionCookie = async (
+const getSessionCookie = async (
   cookies: Record<string, string>
 ): Promise<UserSession> => {
   const fetchedCookies = cookies['auth.session'];
@@ -78,28 +78,4 @@ export const getSessionCookie = async (
   return decoded;
 };
 
-// const refreshToken = async ({ token }: { token: TokenData }) => {
-//   const { NEXT_PUBLIC_DRUPAL_BASE_URL, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } =
-//     process.env;
-//   const url = `${NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
-//   const formData = new URLSearchParams();
-//   if (OAUTH_CLIENT_ID && OAUTH_CLIENT_SECRET && token.refresh_token) {
-//     formData.append('grant_type', 'refresh_token');
-//     formData.append('client_id', OAUTH_CLIENT_ID);
-//     formData.append('client_secret', OAUTH_CLIENT_SECRET);
-//     formData.append('refresh_token', token.refresh_token);
-//   }
-//   console.log('LOG::  ~ formData', formData);
-//   const response = await fetch(url, {
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//       Authorization: token.token_type + ' ' + token.access_token,
-//     },
-//     body: formData,
-//     method: 'POST',
-//   });
-
-//   const refreshedTokens: TokenData = await response.json();
-//   console.log('LOG::  ~ refreshedTokens', refreshedTokens);
-//   return refreshedTokens;
-// };
+export { setAuthCookie, getSessionCookie };

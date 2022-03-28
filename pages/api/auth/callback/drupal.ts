@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { setAuthCookie } from '@utils/cookies';
+import { setAuthCookie } from '@lib';
 import { TokenData, User, UserSession } from '@utils/types';
 import userDataHelper from '@utils/userDataHelper';
 
@@ -45,7 +45,6 @@ export default async (req: ModifiedNextApiReq, res: NextApiResponse) => {
       body: formData,
     });
     const tokenData: TokenData = await tokenRes.json();
-    console.log('LOG::  ~ tokenData', tokenData);
 
     const user: User = await userDataHelper({
       token_type: tokenData.token_type,
