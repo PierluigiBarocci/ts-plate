@@ -8,7 +8,7 @@ import { Layout } from '@components';
 import en from '@lang/en.json';
 import it from '@lang/it.json';
 
-import { UserProvider } from '@store';
+import { SessionProvider } from '@store';
 import theme from 'theme';
 const Langs = { en, it };
 
@@ -42,11 +42,11 @@ export default function App({ Component, pageProps }: AppProps) {
         messages={messages}
         onError={handleIntlError}
       >
-        <UserProvider>
+        <SessionProvider>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </UserProvider>
+        </SessionProvider>
       </IntlProvider>
     </ThemeProvider>
   );

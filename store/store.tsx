@@ -1,22 +1,23 @@
 import create from 'zustand';
-import { User } from '@utils/types';
+import { UserSession } from '@utils/types';
 
 type Store = {
-  user?: User;
-  addUser: (user: User) => void;
-  removeUser: () => void;
+  session?: UserSession;
+  addSession: (session: UserSession) => void;
+  removeSession: () => void;
 };
 
 const useStore = create<Store>(
   (set): Store => ({
-    user: undefined,
-    addUser: user => set(() => ({ user })),
-    removeUser: () => set(() => ({ user: undefined })),
+    session: undefined,
+    addSession: session => set(() => ({ session })),
+    removeSession: () => set(() => ({ session: undefined })),
   })
 );
 
-const useUser = () => useStore(state => state.user);
-const useLogin = () => useStore(state => state.addUser);
-const useLogout = () => useStore(state => state.removeUser);
+const useUser = () => useStore(state => state?.session?.user);
+const useToken = () => useStore(state => state?.session?.token);
+const useLogin = () => useStore(state => state.addSession);
+const useLogout = () => useStore(state => state.removeSession);
 
-export { useUser, useLogin, useLogout };
+export { useUser, useToken, useLogin, useLogout };

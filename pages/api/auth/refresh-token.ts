@@ -13,7 +13,6 @@ export default async function handler(
   const { NEXT_PUBLIC_DRUPAL_BASE_URL, OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET } =
     process.env;
   const { token, refresh } = JSON.parse(req.body);
-  console.log('LOG::  ~ token', token);
   const url = `${NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
   const formData = new URLSearchParams();
   if (OAUTH_CLIENT_ID && OAUTH_CLIENT_SECRET && refresh) {
@@ -33,6 +32,5 @@ export default async function handler(
   });
 
   const refreshedTokens: TokenData = await response.json();
-  console.log('LOG::  ~ refreshedTokens', refreshedTokens);
   res.status(200).json({ token: refreshedTokens });
 }
