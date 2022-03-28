@@ -21,7 +21,6 @@ export default async function handler(
     formData.append('client_secret', OAUTH_CLIENT_SECRET);
     formData.append('refresh_token', refresh);
   }
-  console.log('LOG::  ~ formData', formData);
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
