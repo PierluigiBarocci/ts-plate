@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { setAuthCookie } from '@lib';
+import { setAuthCookie, userDataHelper } from '@lib';
 import { TokenData, User, UserSession } from '@utils/types';
-import userDataHelper from '@utils/userDataHelper';
 
 const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, REDIRECT_URI } = process.env;
 

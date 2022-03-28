@@ -65,6 +65,7 @@ export default function HomePage() {
         body: JSON.stringify({
           token: access_token,
           refresh: refresh_token,
+          user: user,
         }),
       });
       const data = await res.json();
