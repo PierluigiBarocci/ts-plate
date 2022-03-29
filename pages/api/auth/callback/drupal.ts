@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { setAuthCookie, userDataHelper } from '@lib';
 import { TokenData, User, UserSession } from '@utils/types';
 
-const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, REDIRECT_URI } = process.env;
+const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, REDIRECT_URI, NEXTAUTH_URL } =
+  process.env;
 
 const sendRefreshRedirect = (res: NextApiResponse, path = '/') => {
   res.status(200);
@@ -32,7 +33,7 @@ export default async (req: ModifiedNextApiReq, res: NextApiResponse) => {
     formData.append('code', code);
     formData.append('client_id', OAUTH_CLIENT_ID);
     formData.append('client_secret', OAUTH_CLIENT_SECRET);
-    formData.append('redirect_uri', REDIRECT_URI);
+    formData.append('redirect_uri', `${NEXTAUTH_URL}/${REDIRECT_URI}`);
   }
 
   try {

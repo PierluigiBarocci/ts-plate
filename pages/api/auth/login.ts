@@ -6,8 +6,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const scopes = ['email'];
 
 // Pull the values defined in your .env file
-const { OAUTH_CLIENT_ID, REDIRECT_URI, NEXT_PUBLIC_DRUPAL_BASE_URL } =
-  process.env;
+const {
+  OAUTH_CLIENT_ID,
+  REDIRECT_URI,
+  NEXTAUTH_URL,
+  NEXT_PUBLIC_DRUPAL_BASE_URL,
+} = process.env;
 
 const buildURL = (scopes: string[], callback: string) => {
   return (
@@ -19,5 +23,9 @@ const buildURL = (scopes: string[], callback: string) => {
 };
 
 export default async (_req: NextApiRequest, res: NextApiResponse) => {
-  return REDIRECT_URI && res.redirect(buildURL(scopes, REDIRECT_URI));
+  return (
+    REDIRECT_URI &&
+    NEXTAUTH_URL &&
+    res.redirect(buildURL(scopes, `${NEXTAUTH_URL}/${REDIRECT_URI}`))
+  );
 };
