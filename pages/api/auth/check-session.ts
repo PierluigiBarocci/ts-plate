@@ -16,6 +16,7 @@ export default async function handler(
   try {
     const cookies = cookie.parse(req.headers.cookie || '');
     const session: UserSession = await getSessionCookie(cookies);
+    console.log('LOG::  ~ session', session);
     res.status(200).json({ user: session.user, errorMessage: undefined });
   } catch {
     res
