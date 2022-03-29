@@ -1,7 +1,8 @@
 import Iron from 'iron';
 
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
-import { TokenData, UserSession } from '../utils/types';
+import { TokenData, User, UserSession } from '../utils/types';
+import { userDataHelper } from './user-helper';
 
 const { NEXTAUTH_SECRET } = process.env;
 
@@ -82,7 +83,6 @@ const refreshTokenSession = async (cookie: string) => {
     } = process.env;
     const {
       token: { refresh_token },
-      user,
     } = oldSession;
     //2 - call drupal to get another access_token;
     const url = `${NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
@@ -99,6 +99,10 @@ const refreshTokenSession = async (cookie: string) => {
     });
     const refreshedTokens: TokenData = await response.json();
     if (response.ok && refreshedTokens.expires_in) {
+      const user: User = await userDataHelper({
+        token_type: refreshedTokens.token_type,
+        access_token: refreshedTokens.access_token,
+      });
       const session: UserSession = {
         user,
         token: refreshedTokens,

@@ -6,6 +6,38 @@ export default async function handler(
 ) {
   const u_uid = 'd32d1f21-4f41-4a09-b3ce-e777308c6711';
   try {
+    const {
+      OAUTH_CLIENT_ID,
+      OAUTH_CLIENT_SECRET,
+      NEXT_AUTH_ADMIN_USERNAME,
+      NEXT_AUTH_ADMIN_PASSWORD,
+      NEXT_AUTH_ADMIN_SCOPE,
+    } = process.env;
+    const url = `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
+    const formData = new URLSearchParams();
+    if (
+      OAUTH_CLIENT_ID &&
+      OAUTH_CLIENT_SECRET &&
+      NEXT_AUTH_ADMIN_USERNAME &&
+      NEXT_AUTH_ADMIN_PASSWORD &&
+      NEXT_AUTH_ADMIN_SCOPE
+    ) {
+      formData.append('grant_type', 'password');
+      formData.append('client_id', OAUTH_CLIENT_ID);
+      formData.append('client_secret', OAUTH_CLIENT_SECRET);
+      formData.append('username', NEXT_AUTH_ADMIN_USERNAME);
+      formData.append('password', NEXT_AUTH_ADMIN_PASSWORD);
+      formData.append('scope', NEXT_AUTH_ADMIN_SCOPE);
+    }
+    const tokenRes = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: formData,
+    });
+    const tokenData = await tokenRes.json();
+
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/user/user/${u_uid}/relationships/roles`,
       {
@@ -13,7 +45,7 @@ export default async function handler(
         headers: {
           Accept: 'application/vnd.api+json',
           'Content-Type': 'application/vnd.api+json',
-          Authorization: 'Bearer ciao',
+          Authorization: `Bearer ${tokenData.access_token}`,
         },
         body: JSON.stringify({
           data: [
@@ -25,6 +57,7 @@ export default async function handler(
         }),
       }
     );
+    console.log('LOG::  ~ res', res);
     const data = await res.json();
     console.log('LOG::  ~ data', data);
     response.status(200).json({ data });
