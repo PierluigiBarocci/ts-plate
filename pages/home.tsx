@@ -17,24 +17,30 @@ export default function HomePage({ user, session }: IndexPageProps) {
   const intl = useIntl();
   const i18n = translation.home(intl);
 
-  const refreshToken = async () => {
-    if (session && session.token) {
-      console.log('LOG::  ~ session.token', session.token);
-      const {
-        token: { access_token, refresh_token },
-      } = session;
-      if (access_token && refresh_token) {
-        const res = await fetch('api/auth/refresh-token', {
-          method: 'POST',
-          body: JSON.stringify({
-            token: session?.token.access_token,
-            refresh: session?.token.refresh_token,
-          }),
-        });
-        const data = await res.json();
-        console.log('LOG::  ~ data', data);
-      }
-    }
+  // const refreshToken = async () => {
+  //   if (session && session.token) {
+  //     console.log('LOG::  ~ session.token', session.token);
+  //     const {
+  //       token: { access_token, refresh_token },
+  //     } = session;
+  //     if (access_token && refresh_token) {
+  //       const res = await fetch('api/auth/refresh-token', {
+  //         method: 'POST',
+  //         body: JSON.stringify({
+  //           token: session?.token.access_token,
+  //           refresh: session?.token.refresh_token,
+  //         }),
+  //       });
+  //       const data = await res.json();
+  //       console.log('LOG::  ~ data', data);
+  //     }
+  //   }
+  // };
+
+  const changeUser = async () => {
+    const res = await fetch('api/modify');
+    const data = await res.json();
+    console.log('LOG::  ~ data', data);
   };
 
   return (
@@ -84,14 +90,20 @@ export default function HomePage({ user, session }: IndexPageProps) {
                     Logout
                   </Button>
                 </Link>
-
                 <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={changeUser}
+                >
+                  Credential
+                </Button>
+                {/* <Button
                   variant="contained"
                   color="secondary"
                   onClick={refreshToken}
                 >
                   Refresh
-                </Button>
+                </Button> */}
               </div>
             </>
           )

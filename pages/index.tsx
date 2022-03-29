@@ -72,6 +72,12 @@ export default function HomePage() {
   //   }
   // };
 
+  const changeUser = async () => {
+    const res = await fetch('api/modify');
+    const data = await res.json();
+    console.log('LOG::  ~ data', data);
+  };
+
   return (
     <>
       <Head>
@@ -118,6 +124,13 @@ export default function HomePage() {
                   Logout
                 </Button>
               </Link>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={changeUser}
+              >
+                Credential
+              </Button>
 
               {/* <Button
                 variant="contained"
