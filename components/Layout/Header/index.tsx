@@ -23,7 +23,7 @@ const Header = () => {
   const user = useUser();
   const menuItemsLeft: MenuItemsObject[] = [
     {
-      href: '#artwork',
+      href: '/image',
       text: 'artwork',
     },
     { href: '#audio', text: 'audio' },
