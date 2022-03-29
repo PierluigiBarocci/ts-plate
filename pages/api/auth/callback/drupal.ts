@@ -59,7 +59,7 @@ export default async (req: ModifiedNextApiReq, res: NextApiResponse) => {
 
     // Send the session information to our user in the form of a cookie header.
     if (tokenData && tokenData.expires_in) {
-      const setCookieRes = await setAuthCookie(res, session, {
+      const setCookieRes = await setAuthCookie(session, {
         maxAge: tokenData.expires_in * 1000,
       });
       if (setCookieRes) {

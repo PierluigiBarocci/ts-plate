@@ -105,8 +105,10 @@ export default function HomePage() {
         {user ? (
           <>
             <Typography variant="h1" style={{ fontSize: 40 }}>
-              <span style={{ color: 'purple' }}> {user.email}</span> is
-              currently logged in 🎉
+              <span style={{ color: 'purple' }}>
+                {user.field_name} {user.field_surname}{' '}
+              </span>
+              is currently logged in 🎉
             </Typography>
 
             <div

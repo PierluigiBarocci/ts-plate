@@ -1,12 +1,11 @@
 import Iron from 'iron';
-import { NextApiResponse } from 'next';
+
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
-import { UserSession } from '../utils/types';
+import { TokenData, UserSession } from '../utils/types';
 
 const { NEXTAUTH_SECRET } = process.env;
 
 const setAuthCookie = async (
-  res: NextApiResponse,
   session: UserSession,
   options: CookieSerializeOptions = {}
 ) => {
@@ -40,17 +39,7 @@ const setAuthCookie = async (
     delete refreshOpts.expires;
     delete refreshOpts.maxAge;
 
-    // Set the cookie in the header of the response
-    // res.setHeader(
-    //   'Set-Cookie',
-    //   cookie.serialize('auth.session', stringValue, opts)
-    // );
-
     return { stringValue, opts, refreshOpts };
-    // res.setHeader('Set-Cookie', [
-    //   cookie.serialize('auth.session', stringValue, opts),
-    //   cookie.serialize('auth.refresh', stringValue, refreshOpts),
-    // ]);
   } catch (error) {
     console.error('Failed to seal session object', error);
     return;
@@ -71,4 +60,59 @@ const getSessionCookie = async (cookie: string): Promise<UserSession> => {
   return decoded;
 };
 
-export { setAuthCookie, getSessionCookie };
+const accessTokenSession = async (cookie: string) =>
+  cookie && (await getSessionCookie(cookie));
+
+const refreshTokenSession = async (cookie: string) => {
+  /**
+   * Need to handle Refresh_Token:
+   * 1 - get it from the headers;
+   * 2 - call drupal to get another access_token;
+   * 3 - setCookie to the headers;
+   * 4 - return the user
+   */
+
+  try {
+    //1 - get it from the headers;
+    const oldSession = await getSessionCookie(cookie);
+    const {
+      NEXT_PUBLIC_DRUPAL_BASE_URL,
+      OAUTH_CLIENT_ID,
+      OAUTH_CLIENT_SECRET,
+    } = process.env;
+    const {
+      token: { refresh_token },
+      user,
+    } = oldSession;
+    //2 - call drupal to get another access_token;
+    const url = `${NEXT_PUBLIC_DRUPAL_BASE_URL}/oauth/token`;
+    const formData = new URLSearchParams();
+    if (OAUTH_CLIENT_ID && OAUTH_CLIENT_SECRET && refresh_token) {
+      formData.append('grant_type', 'refresh_token');
+      formData.append('client_id', OAUTH_CLIENT_ID);
+      formData.append('client_secret', OAUTH_CLIENT_SECRET);
+      formData.append('refresh_token', refresh_token);
+    }
+    const response = await fetch(url, {
+      body: formData,
+      method: 'POST',
+    });
+    const refreshedTokens: TokenData = await response.json();
+    if (response.ok && refreshedTokens.expires_in) {
+      const session: UserSession = {
+        user,
+        token: refreshedTokens,
+      };
+      return session;
+    }
+  } catch (err) {
+    throw new Error('Auth session not found');
+  }
+};
+
+export {
+  setAuthCookie,
+  getSessionCookie,
+  accessTokenSession,
+  refreshTokenSession,
+};
