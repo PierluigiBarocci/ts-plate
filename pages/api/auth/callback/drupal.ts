@@ -1,3 +1,4 @@
+import cookie from 'cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { setAuthCookie, userDataHelper } from '@lib';
 import { TokenData, User, UserSession } from '@utils/types';
@@ -58,9 +59,16 @@ export default async (req: ModifiedNextApiReq, res: NextApiResponse) => {
 
     // Send the session information to our user in the form of a cookie header.
     if (tokenData && tokenData.expires_in) {
-      await setAuthCookie(res, session, {
+      const setCookieRes = await setAuthCookie(res, session, {
         maxAge: tokenData.expires_in * 1000,
       });
+      if (setCookieRes) {
+        const { stringValue, opts, refreshOpts } = setCookieRes;
+        res.setHeader('Set-Cookie', [
+          cookie.serialize('auth.session', stringValue, opts),
+          cookie.serialize('auth.refresh', stringValue, refreshOpts),
+        ]);
+      }
     }
 
     // Send 200 response to set cookies and refresh the page

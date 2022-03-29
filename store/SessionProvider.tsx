@@ -8,6 +8,7 @@ const SessionProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       const user = await checkValidSession();
+      console.log('LOG::  ~ user', user);
       user ? login(user) : logout();
     };
     // Check if session is valid

@@ -6,9 +6,14 @@ interface RefreshTokenProps {
   refresh_token: string;
 }
 
+type CheckValidSessionRes = {
+  user?: User;
+  errorMessage?: string;
+};
+
 const checkValidSession = async () => {
   const res = await fetch(`/api/auth/check-session`);
-  const data: { user?: User; errorMessage?: string } = await res.json();
+  const data: CheckValidSessionRes = await res.json();
   return res.ok && !data.errorMessage && data.user;
 };
 

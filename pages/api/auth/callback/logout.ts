@@ -13,16 +13,22 @@ const sendRefreshRedirect = (res: NextApiResponse, path = '/') => {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiResponse, res: NextApiResponse) => {
   try {
-    res.setHeader(
-      'Set-Cookie',
+    res.setHeader('Set-Cookie', [
       cookie.serialize('auth.session', 'deleted', {
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
         path: '/',
         expires: new Date('Thu, 01 Jan 1970 00:00:00 GMT'),
-      })
-    );
+      }),
+      cookie.serialize('auth.refresh', 'deleted', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'strict',
+        path: '/',
+        expires: new Date('Thu, 01 Jan 1970 00:00:00 GMT'),
+      }),
+    ]);
 
     // Send 200 response to set cookies and refresh the page
     return sendRefreshRedirect(res);

@@ -1,4 +1,3 @@
-import cookie from 'cookie';
 import Iron from 'iron';
 import { NextApiResponse } from 'next';
 import { CookieSerializeOptions } from 'next/dist/server/web/types';
@@ -37,15 +36,17 @@ const setAuthCookie = async (
       opts.maxAge /= 1000;
     }
 
-    // const refreshOpts = { ...opts };
-    // delete refreshOpts.expires;
-    // delete refreshOpts.maxAge;
+    const refreshOpts = { ...opts };
+    delete refreshOpts.expires;
+    delete refreshOpts.maxAge;
 
     // Set the cookie in the header of the response
-    res.setHeader(
-      'Set-Cookie',
-      cookie.serialize('auth.session', stringValue, opts)
-    );
+    // res.setHeader(
+    //   'Set-Cookie',
+    //   cookie.serialize('auth.session', stringValue, opts)
+    // );
+
+    return { stringValue, opts, refreshOpts };
     // res.setHeader('Set-Cookie', [
     //   cookie.serialize('auth.session', stringValue, opts),
     //   cookie.serialize('auth.refresh', stringValue, refreshOpts),
@@ -56,12 +57,8 @@ const setAuthCookie = async (
   }
 };
 
-const getSessionCookie = async (
-  cookies: Record<string, string>
-): Promise<UserSession> => {
-  const fetchedCookies = cookies['auth.session'];
-
-  if (!fetchedCookies) {
+const getSessionCookie = async (cookie: string): Promise<UserSession> => {
+  if (!cookie) {
     throw new Error('Auth session not found');
   }
 
@@ -69,11 +66,7 @@ const getSessionCookie = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const decoded: any =
     process.env.NEXTAUTH_SECRET &&
-    (await Iron.unseal(
-      fetchedCookies,
-      process.env.NEXTAUTH_SECRET,
-      Iron.defaults
-    ));
+    (await Iron.unseal(cookie, process.env.NEXTAUTH_SECRET, Iron.defaults));
 
   return decoded;
 };
