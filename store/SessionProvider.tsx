@@ -7,8 +7,8 @@ const SessionProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = useLogout();
   useEffect(() => {
     const checkSession = async () => {
-      const session = await checkValidSession();
-      session ? login(session) : logout();
+      const user = await checkValidSession();
+      user ? login(user) : logout();
     };
     // Check if session is valid
     checkSession();

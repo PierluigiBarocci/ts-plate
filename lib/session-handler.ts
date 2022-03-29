@@ -1,4 +1,4 @@
-import { TokenData, User, UserSession } from '@utils/types';
+import { TokenData, User } from '@utils/types';
 
 interface RefreshTokenProps {
   user: User;
@@ -8,8 +8,8 @@ interface RefreshTokenProps {
 
 const checkValidSession = async () => {
   const res = await fetch(`/api/auth/check-session`);
-  const data: { session: UserSession } = await res.json();
-  return res.ok && data.session;
+  const data: { user?: User; errorMessage?: string } = await res.json();
+  return res.ok && !data.errorMessage && data.user;
 };
 
 const refreshToken = async ({

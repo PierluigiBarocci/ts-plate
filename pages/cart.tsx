@@ -5,13 +5,12 @@ import { GetStaticPropsContext, PreviewData } from 'next';
 import Head from 'next/head';
 
 import { useIntl } from 'react-intl';
-import { useToken } from '@store';
+
 import { translation } from '@utils/translation';
 
 const Cart = () => {
   const intl = useIntl();
   const i18n = translation.home(intl);
-  const token = useToken();
 
   return (
     <div>
@@ -21,7 +20,6 @@ const Cart = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h1>{i18n.title}</h1>
-      {token && <p>{token.access_token}</p>}
       <p>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores,
         officia eligendi perspiciatis corporis minus debitis eius doloribus
@@ -82,26 +80,26 @@ export async function getStaticProps(
   context: GetStaticPropsContext<ParsedUrlQuery, PreviewData>
 ) {
   try {
-    const fetchedToken =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRhOTQ4NTU1OTA3NThlNTY4ZjEwNjVjYmZkYzc0MDUzMmE1ZGMyMmFhNzc0YjA3NGI4ZWI0N2Q4MWE5YTgzMWMwZGJkM2VhY2ZiMmEzNjg4In0.eyJhdWQiOiI5NzA2OWE0Yi04MDU1LTQwNTItOGNkMC1iOTliYjU4ODRiN2UiLCJqdGkiOiI0YTk0ODU1NTkwNzU4ZTU2OGYxMDY1Y2JmZGM3NDA1MzJhNWRjMjJhYTc3NGIwNzRiOGViNDdkODFhOWE4MzFjMGRiZDNlYWNmYjJhMzY4OCIsImlhdCI6MTY0ODQ2NDQ3OSwibmJmIjoxNjQ4NDY0NDc5LCJleHAiOjE2NDg0NjQ3NzkuNzY2NzEyOSwic3ViIjoiNCIsInNjb3BlIjpbImF1dGhlbnRpY2F0ZWQiLCJlbWFpbCJdfQ.MOnJAXmoMYzXdyy21ohbNcxW2dpi4vjk-uuVf60QWy0UNkXtwY5xC0DExe8p0ZgOPzgFQFOKagfGZC5sFMdoIjFECTtb9GOaEqHN3OWBZkgmw8ewHBb4VAK1umKrv62LDvimgvOyZTcfzhEHRdW-P4iz3WGHakmVqWggHK4vSJrmiyvXFLaCkFKaz4JJSBbb_964p5AvUJrYSIlhkHqrMkAMfcDM02FR7jQeoEMVgq4zVXFGoIJpjTHIcREO7KLbGosFDbACeZaHWlTb29TCauxIHKtc1JMTBdwHPKqctjOujs9pkX0ZVjTRZrsVBfCN81Ilu1f8UM88GA_WsGff7OBTpcEhLU751DGxs8Z_fRy8qx_vHFxThrGRgTyCPBokm71ta3Wh_MoX5b4tg_Oi1T5Swc7-EvUlFbFLiSUKdHsli4LDbzs6KIV9egqV_GnjaOSrnMa8O1rAq_p_yntiLdUvH-_h98SOi6_VBxZuMu9fZvZP3EDAQaseiBN0T8zAw23ct-WEnIT3rrYwULhlJ7riqaiXvKZZyw5iJHuk7-sToj6pv6OhanymJ7z8eg8bEPcWIf-nAyiLJ_NNg_Bsn-zNG_CNT8JOr2LzOxl9pqczFridC6QmI-ZJB8VZcoC0onFVJS_-fNG2ltNg4D6r7vHzIjozpJLLVJgFwfMMAsg';
+    // const fetchedToken =
+    //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRhOTQ4NTU1OTA3NThlNTY4ZjEwNjVjYmZkYzc0MDUzMmE1ZGMyMmFhNzc0YjA3NGI4ZWI0N2Q4MWE5YTgzMWMwZGJkM2VhY2ZiMmEzNjg4In0.eyJhdWQiOiI5NzA2OWE0Yi04MDU1LTQwNTItOGNkMC1iOTliYjU4ODRiN2UiLCJqdGkiOiI0YTk0ODU1NTkwNzU4ZTU2OGYxMDY1Y2JmZGM3NDA1MzJhNWRjMjJhYTc3NGIwNzRiOGViNDdkODFhOWE4MzFjMGRiZDNlYWNmYjJhMzY4OCIsImlhdCI6MTY0ODQ2NDQ3OSwibmJmIjoxNjQ4NDY0NDc5LCJleHAiOjE2NDg0NjQ3NzkuNzY2NzEyOSwic3ViIjoiNCIsInNjb3BlIjpbImF1dGhlbnRpY2F0ZWQiLCJlbWFpbCJdfQ.MOnJAXmoMYzXdyy21ohbNcxW2dpi4vjk-uuVf60QWy0UNkXtwY5xC0DExe8p0ZgOPzgFQFOKagfGZC5sFMdoIjFECTtb9GOaEqHN3OWBZkgmw8ewHBb4VAK1umKrv62LDvimgvOyZTcfzhEHRdW-P4iz3WGHakmVqWggHK4vSJrmiyvXFLaCkFKaz4JJSBbb_964p5AvUJrYSIlhkHqrMkAMfcDM02FR7jQeoEMVgq4zVXFGoIJpjTHIcREO7KLbGosFDbACeZaHWlTb29TCauxIHKtc1JMTBdwHPKqctjOujs9pkX0ZVjTRZrsVBfCN81Ilu1f8UM88GA_WsGff7OBTpcEhLU751DGxs8Z_fRy8qx_vHFxThrGRgTyCPBokm71ta3Wh_MoX5b4tg_Oi1T5Swc7-EvUlFbFLiSUKdHsli4LDbzs6KIV9egqV_GnjaOSrnMa8O1rAq_p_yntiLdUvH-_h98SOi6_VBxZuMu9fZvZP3EDAQaseiBN0T8zAw23ct-WEnIT3rrYwULhlJ7riqaiXvKZZyw5iJHuk7-sToj6pv6OhanymJ7z8eg8bEPcWIf-nAyiLJ_NNg_Bsn-zNG_CNT8JOr2LzOxl9pqczFridC6QmI-ZJB8VZcoC0onFVJS_-fNG2ltNg4D6r7vHzIjozpJLLVJgFwfMMAsg';
     // const cookies = cookie.parse(req.headers.cookie || '');
     // const session: UserSession = await getSessionCookie(cookies);
 
     /**
      * Fetch Items from cart
      */
-    const resCart = await fetch(
-      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/cart?_format=json`,
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Bearer ${fetchedToken}`,
-        },
-      }
-    );
-    console.log('LOG::  ~ resCart', resCart);
-    const data = await resCart.json();
-    console.log('LOG::  ~ data', data[0].order_items);
+    // const resCart = await fetch(
+    //   `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/cart?_format=json`,
+    //   {
+    //     headers: {
+    //       'Content-Type': 'application/x-www-form-urlencoded',
+    //       Authorization: `Bearer ${fetchedToken}`,
+    //     },
+    //   }
+    // );
+    // console.log('LOG::  ~ resCart', resCart);
+    // const data = await resCart.json();
+    // console.log('LOG::  ~ data', data[0].order_items);
     /**
      * Search for all
      */
@@ -157,33 +155,33 @@ export async function getStaticProps(
     // console.log('LOG::  ~ data', data);
 
     /**Modify cart Item */
-    const resMo = await fetch(
-      `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/carts/daeb47f1-45a9-4566-8747-053e59f31eb5/items/1`,
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/vnd.api+json',
-          'Commerce-Cart-Token': `ABC-123`,
-          'Commerce-Current-Store': `46fa1f24-9610-4735-84fe-4f9492907417`,
-          Authorization: `Bearer ${fetchedToken}`,
-        },
-        body: JSON.stringify({
-          data: [
-            {
-              type: 'order-items--default',
-              id: '8b588ad2-d4a9-46c3-87e7-2c65ecf33404',
-              meta: {
-                quantity: 4,
-                combine: true,
-              },
-            },
-          ],
-        }),
-      }
-    );
-    console.log('LOG::  ~ res', resMo);
-    const dataMo = await resMo.json();
-    console.log('LOG::  ~ data', dataMo);
+    // const resMo = await fetch(
+    //   `${process.env.NEXT_PUBLIC_DRUPAL_BASE_URL}/jsonapi/carts/daeb47f1-45a9-4566-8747-053e59f31eb5/items/1`,
+    //   {
+    //     method: 'PATCH',
+    //     headers: {
+    //       'Content-Type': 'application/vnd.api+json',
+    //       'Commerce-Cart-Token': `ABC-123`,
+    //       'Commerce-Current-Store': `46fa1f24-9610-4735-84fe-4f9492907417`,
+    //       Authorization: `Bearer ${fetchedToken}`,
+    //     },
+    //     body: JSON.stringify({
+    //       data: [
+    //         {
+    //           type: 'order-items--default',
+    //           id: '8b588ad2-d4a9-46c3-87e7-2c65ecf33404',
+    //           meta: {
+    //             quantity: 4,
+    //             combine: true,
+    //           },
+    //         },
+    //       ],
+    //     }),
+    //   }
+    // );
+    // console.log('LOG::  ~ res', resMo);
+    // const dataMo = await resMo.json();
+    // console.log('LOG::  ~ data', dataMo);
 
     // const node = await getResource<DrupalNode>(
     //   'node--article',

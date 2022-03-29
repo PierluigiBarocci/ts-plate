@@ -43,7 +43,7 @@ import Link from 'next/link';
 
 import { useIntl } from 'react-intl';
 
-import { useToken, useUser } from '@store';
+import { useUser } from '@store';
 import { translation } from '@utils/translation';
 
 // interface IndexPageProps {
@@ -55,23 +55,22 @@ export default function HomePage() {
   const intl = useIntl();
   const i18n = translation.home(intl);
   const user = useUser();
-  const token = useToken();
 
-  const refreshToken = async () => {
-    if (token) {
-      const { access_token, refresh_token } = token;
-      const res = await fetch('api/auth/refresh-token', {
-        method: 'POST',
-        body: JSON.stringify({
-          token: access_token,
-          refresh: refresh_token,
-          user: user,
-        }),
-      });
-      const data = await res.json();
-      console.log('LOG::  ~ data', data);
-    }
-  };
+  // const refreshToken = async () => {
+  //   if (token) {
+  //     const { access_token, refresh_token } = token;
+  //     const res = await fetch('api/auth/refresh-token', {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         token: access_token,
+  //         refresh: refresh_token,
+  //         user: user,
+  //       }),
+  //     });
+  //     const data = await res.json();
+  //     console.log('LOG::  ~ data', data);
+  //   }
+  // };
 
   return (
     <>
@@ -120,13 +119,13 @@ export default function HomePage() {
                 </Button>
               </Link>
 
-              <Button
+              {/* <Button
                 variant="contained"
                 color="secondary"
                 onClick={refreshToken}
               >
                 Refresh
-              </Button>
+              </Button> */}
             </div>
           </>
         ) : (

@@ -2,10 +2,10 @@
 import cookie from 'cookie';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSessionCookie } from '@lib';
-import { UserSession } from '@utils/types';
+import { User, UserSession } from '@utils/types';
 
 type Data = {
-  session?: UserSession;
+  user?: User;
   errorMessage?: string;
 };
 
@@ -16,8 +16,10 @@ export default async function handler(
   try {
     const cookies = cookie.parse(req.headers.cookie || '');
     const session: UserSession = await getSessionCookie(cookies);
-    res.status(200).json({ session });
+    res.status(200).json({ user: session.user, errorMessage: undefined });
   } catch {
-    res.status(401).json({ errorMessage: 'User not authenticated' });
+    res
+      .status(401)
+      .json({ user: undefined, errorMessage: 'User not authenticated' });
   }
 }
