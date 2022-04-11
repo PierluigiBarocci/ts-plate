@@ -4,7 +4,7 @@ export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  const u_uid = 'd32d1f21-4f41-4a09-b3ce-e777308c6711';
+  const u_uid = '';
   try {
     const {
       OAUTH_CLIENT_ID,
@@ -51,7 +51,7 @@ export default async function handler(
           data: [
             {
               type: 'user_role--user_role',
-              id: 'bcb2ba8b-79a2-4247-b122-d0036874a1f9',
+              id: u_uid,
             },
           ],
         }),
